@@ -4,17 +4,26 @@
  */
 
 import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, Button, Snackbar, Alert } from '@mui/material';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, closestCenter } from '@dnd-kit/core';
 import BlockLibrary from '../BlockLibrary/BlockLibrary';
 import Workspace from '../Workspace/Workspace';
 import CodeViewer from '../CodeViewer/CodeViewer';
+import SaveProjectDialog from '../common/SaveProjectDialog';
+import LoadProjectDialog from '../common/LoadProjectDialog';
 import { useAppDispatch } from '../../hooks/useBlocks';
-import { addBlock, reorderBlocks, clearWorkspace } from '../../store/slices/blockSlice';
+import { useBlocks } from '../../hooks/useBlocks';
+import { addBlock, reorderBlocks, clearWorkspace, loadProject as loadProjectAction } from '../../store/slices/blockSlice';
+import { saveProject, loadProject } from '../../services/storageService';
 
 const MainLayout: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { blocks, currentProject } = useBlocks();
   const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [saveDialogOpen, setSaveDialogOpen] = React.useState(false);
+  const [loadDialogOpen, setLoadDialogOpen] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -47,6 +56,27 @@ const MainLayout: React.FC = () => {
   const handleClearWorkspace = () => {
     if (window.confirm('작업 공간을 초기화하시겠습니까?')) {
       dispatch(clearWorkspace());
+      setSnackbarMessage('작업 공간이 초기화되었습니다');
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleSaveProject = (name: string, description: string) => {
+    const project = saveProject(name, blocks, description, currentProject?.id);
+    dispatch(loadProjectAction(project));
+    setSnackbarMessage('프로젝트가 저장되었습니다');
+    setSnackbarOpen(true);
+  };
+
+  const handleLoadProject = (projectId: string) => {
+    const project = loadProject(projectId);
+    if (project) {
+      dispatch(loadProjectAction(project));
+      setSnackbarMessage(`"${project.name}" 프로젝트가 로드되었습니다`);
+      setSnackbarOpen(true);
+    } else {
+      setSnackbarMessage('프로젝트를 불러올 수 없습니다');
+      setSnackbarOpen(true);
     }
   };
 
@@ -65,8 +95,8 @@ const MainLayout: React.FC = () => {
             </Typography>
             <Button color="inherit">📖 매뉴얼</Button>
             <Button color="inherit">📝 예제</Button>
-            <Button color="inherit">💾 저장</Button>
-            <Button color="inherit">📂 불러오기</Button>
+            <Button color="inherit" onClick={() => setSaveDialogOpen(true)}>💾 저장</Button>
+            <Button color="inherit" onClick={() => setLoadDialogOpen(true)}>📂 불러오기</Button>
             <Button color="inherit" onClick={handleClearWorkspace}>🗑️ 초기화</Button>
           </Toolbar>
         </AppBar>
@@ -123,6 +153,31 @@ const MainLayout: React.FC = () => {
           </Box>
         ) : null}
       </DragOverlay>
+
+      <SaveProjectDialog
+        open={saveDialogOpen}
+        onClose={() => setSaveDialogOpen(false)}
+        onSave={handleSaveProject}
+        defaultName={currentProject?.name || ''}
+        defaultDescription={currentProject?.description || ''}
+      />
+
+      <LoadProjectDialog
+        open={loadDialogOpen}
+        onClose={() => setLoadDialogOpen(false)}
+        onLoad={handleLoadProject}
+      />
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </DndContext>
   );
 };

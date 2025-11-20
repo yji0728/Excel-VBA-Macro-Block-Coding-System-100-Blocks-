@@ -12,7 +12,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { BlockInstance as BlockInstanceType } from '../../types/block';
 import { getBlockById } from '../../data/blockDefinitions';
 import { useAppDispatch } from '../../hooks/useBlocks';
-import { deleteBlock } from '../../store/slices/blockSlice';
+import { deleteBlock, updateBlock } from '../../store/slices/blockSlice';
+import BlockEditor from '../BlockEditor/BlockEditor';
 
 interface BlockInstanceProps {
   block: BlockInstanceType;
@@ -21,6 +22,7 @@ interface BlockInstanceProps {
 const BlockInstance: React.FC<BlockInstanceProps> = ({ block }) => {
   const dispatch = useAppDispatch();
   const blockDef = getBlockById(block.blockType);
+  const [editorOpen, setEditorOpen] = React.useState(false);
   
   const {
     attributes,
@@ -45,22 +47,37 @@ const BlockInstance: React.FC<BlockInstanceProps> = ({ block }) => {
     dispatch(deleteBlock(block.id));
   };
 
+  const handleEdit = () => {
+    setEditorOpen(true);
+  };
+
+  const handleEditorClose = () => {
+    setEditorOpen(false);
+  };
+
+  const handleEditorSave = (blockId: string, parameters: { [key: string]: any }) => {
+    dispatch(updateBlock({ id: blockId, updates: { parameters } }));
+  };
+
   return (
-    <Paper
-      ref={setNodeRef}
-      style={style}
-      elevation={2}
-      sx={{
-        mb: 2,
-        p: 2,
-        border: `2px solid ${blockDef.color}`,
-        borderLeft: `6px solid ${blockDef.color}`,
-        bgcolor: 'white',
-        '&:hover': {
-          bgcolor: '#fafafa'
-        }
-      }}
-    >
+    <>
+      <Paper
+        ref={setNodeRef}
+        style={style}
+        elevation={2}
+        onDoubleClick={handleEdit}
+        sx={{
+          mb: 2,
+          p: 2,
+          border: `2px solid ${blockDef.color}`,
+          borderLeft: `6px solid ${blockDef.color}`,
+          bgcolor: 'white',
+          cursor: 'pointer',
+          '&:hover': {
+            bgcolor: '#fafafa'
+          }
+        }}
+      >
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
         {/* Drag Handle */}
         <Box
@@ -128,6 +145,14 @@ const BlockInstance: React.FC<BlockInstanceProps> = ({ block }) => {
         </IconButton>
       </Box>
     </Paper>
+
+    <BlockEditor
+      open={editorOpen}
+      block={block}
+      onClose={handleEditorClose}
+      onSave={handleEditorSave}
+    />
+  </>
   );
 };
 
