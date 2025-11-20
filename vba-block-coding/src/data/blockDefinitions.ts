@@ -303,6 +303,7 @@ export const BLOCK_DEFINITIONS: BlockDefinition[] = [
 
 // Category mapping for easy lookup
 export const CATEGORIES = [
+  { number: 0, name: "최근 사용", color: "#757575", icon: "🕒" }, // Special category for recent blocks
   { number: 1, name: "기본 작업", color: "#2196F3", icon: "📁" },
   { number: 2, name: "셀/범위 조작", color: "#4CAF50", icon: "📊" },
   { number: 3, name: "데이터 입력/수정", color: "#9C27B0", icon: "✏️" },

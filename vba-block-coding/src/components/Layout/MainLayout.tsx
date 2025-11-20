@@ -15,6 +15,7 @@ import { useAppDispatch } from '../../hooks/useBlocks';
 import { useBlocks } from '../../hooks/useBlocks';
 import { addBlock, reorderBlocks, clearWorkspace, loadProject as loadProjectAction } from '../../store/slices/blockSlice';
 import { saveProject, loadProject } from '../../services/storageService';
+import { addRecentBlock } from '../../services/recentBlocksService';
 
 const MainLayout: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +40,8 @@ const MainLayout: React.FC = () => {
     if (active.data.current?.type === 'library-block' && over.id === 'workspace') {
       const block = active.data.current.block;
       dispatch(addBlock({ blockType: block.id }));
+      // Track recent block usage
+      addRecentBlock(block.id);
     }
     
     // Check if reordering within workspace

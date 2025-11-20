@@ -3,7 +3,7 @@
  * Displays categories and blocks in a tree view
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   TextField,
@@ -21,12 +21,20 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { CATEGORIES, getBlocksByCategory } from '../../data/blockDefinitions';
+import { CATEGORIES, getBlocksByCategory, getBlockById } from '../../data/blockDefinitions';
+import { getRecentBlocks } from '../../services/recentBlocksService';
 import BlockCard from './BlockCard';
 
 const BlockLibrary: React.FC = () => {
-  const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
+  const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set([0])); // Expand "Recent" by default
   const [searchQuery, setSearchQuery] = useState('');
+  const [recentBlockTypes, setRecentBlockTypes] = useState<string[]>([]);
+
+  // Load recent blocks on mount
+  useEffect(() => {
+    const recent = getRecentBlocks();
+    setRecentBlockTypes(recent.map(rb => rb.blockType));
+  }, []);
 
   const handleCategoryClick = (categoryNumber: number) => {
     const newExpanded = new Set(expandedCategories);
@@ -127,11 +135,27 @@ const BlockLibrary: React.FC = () => {
         <List component="nav" disablePadding>
           {CATEGORIES.map((category) => {
             const isExpanded = expandedCategories.has(category.number);
-            const allBlocks = getBlocksByCategory(category.number);
+            
+            // Special handling for "Recent Blocks" category
+            let allBlocks;
+            if (category.number === 0) {
+              // Get recent blocks
+              allBlocks = recentBlockTypes
+                .map(blockType => getBlockById(blockType))
+                .filter(block => block !== undefined);
+            } else {
+              allBlocks = getBlocksByCategory(category.number);
+            }
+            
             const filteredBlocks = filterBlocks(allBlocks);
             
             // Don't show category if no blocks match search
             if (searchQuery.trim() && filteredBlocks.length === 0) {
+              return null;
+            }
+            
+            // Don't show "Recent Blocks" if empty
+            if (category.number === 0 && filteredBlocks.length === 0) {
               return null;
             }
             
