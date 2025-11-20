@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
+import { useDraggable } from '@dnd-kit/core';
 import { BlockDefinition } from '../../types/block';
 
 interface BlockCardProps {
@@ -12,8 +13,24 @@ interface BlockCardProps {
 }
 
 const BlockCard: React.FC<BlockCardProps> = ({ block }) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: `block-library-${block.id}`,
+    data: {
+      block,
+      type: 'library-block'
+    }
+  });
+
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    opacity: isDragging ? 0.5 : 1,
+  } : undefined;
+
   return (
     <Paper
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
       elevation={1}
       sx={{
         width: '100%',
@@ -29,7 +46,8 @@ const BlockCard: React.FC<BlockCardProps> = ({ block }) => {
         },
         '&:active': {
           cursor: 'grabbing'
-        }
+        },
+        ...style
       }}
     >
       <Typography 
