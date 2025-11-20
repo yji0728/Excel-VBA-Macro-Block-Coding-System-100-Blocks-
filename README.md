@@ -68,37 +68,40 @@ Excel VBA 매크로를 시각적인 블록으로 조립하는 웹 기반 코딩 
 
 ## 🚀 시작하기
 
-### 개발자용
+### Phase 1 MVP 개발을 시작하려면
 
-1. **스펙 문서 확인**
-   ```bash
-   # 웹앱 스펙 문서 읽기
-   cat webapp_specification.md
-   ```
+📖 **[GETTING_STARTED.md](./GETTING_STARTED.md)** - 개발 시작 가이드 (필독!)
 
-2. **블록 정의 참조**
-   ```bash
-   # 100개 블록 정의 확인
-   cat "excel _vba_code_100.md"
-   ```
+1. **프로젝트 이해하기**
+   - [README.md](./README.md) - 프로젝트 개요
+   - [webapp_specification.md](./webapp_specification.md) - 웹앱 전체 스펙
+   - [excel _vba_code_100.md](./excel%20_vba_code_100.md) - 100개 블록 정의
 
-3. **개발 환경 설정** (예시 - React)
-   ```bash
-   # 프로젝트 생성
-   npx create-react-app vba-block-coding --template typescript
-   cd vba-block-coding
-   
-   # 필수 라이브러리 설치
-   npm install @mui/material @emotion/react @emotion/styled
-   npm install react-beautiful-dnd
-   npm install @monaco-editor/react
-   npm install @reduxjs/toolkit react-redux
-   ```
+2. **개발 환경 설정**
+   - [DEVELOPMENT_SETUP.md](./DEVELOPMENT_SETUP.md) - 상세 설정 가이드
 
-4. **개발 시작**
-   - `webapp_specification.md`의 Phase 1 (Week 1)부터 시작
-   - 3개 패널 레이아웃 구현
-   - 블록 정의 데이터 구조 생성
+3. **개발 시작**
+   - [PHASE1_MVP_CHECKLIST.md](./PHASE1_MVP_CHECKLIST.md) - 4주 체크리스트
+   - Week 1부터 순서대로 진행
+
+### 빠른 시작 (Quick Start)
+```bash
+# 1. 프로젝트 생성
+npx create-react-app vba-block-coding --template typescript
+cd vba-block-coding
+
+# 2. 필수 라이브러리 설치
+npm install @mui/material @emotion/react @emotion/styled
+npm install react-beautiful-dnd @types/react-beautiful-dnd
+npm install @monaco-editor/react
+npm install @reduxjs/toolkit react-redux
+npm install uuid @types/uuid
+
+# 3. 개발 서버 실행
+npm start
+```
+
+자세한 내용은 **[DEVELOPMENT_SETUP.md](./DEVELOPMENT_SETUP.md)** 참조
 
 ### 기획자/디자이너용
 
@@ -153,11 +156,29 @@ Excel VBA 매크로를 시각적인 블록으로 조립하는 웹 기반 코딩 
 
 ## 🛠️ 개발 로드맵
 
-### Phase 1: MVP (4주)
-- ✅ 3개 패널 UI 구현
-- ✅ 드래그 앤 드롭 기능
-- ✅ 실시간 코드 생성
-- ✅ 로컬 저장/불러오기
+### Phase 1: MVP (4주) - 🔄 진행 중
+**상세 체크리스트**: [PHASE1_MVP_CHECKLIST.md](./PHASE1_MVP_CHECKLIST.md)
+
+- [ ] Week 1: 프로젝트 기반 구축
+  - [ ] 프로젝트 초기 설정
+  - [ ] UI 레이아웃 구현 (3개 패널)
+  - [ ] 블록 정의 데이터 구조 설계
+  - [ ] 블록 라이브러리 패널 UI
+- [ ] Week 2: 드래그 앤 드롭 및 작업 공간
+  - [ ] 드래그 앤 드롭 기능 구현
+  - [ ] 작업 공간 패널 구현
+  - [ ] 블록 추가/삭제 기능
+  - [ ] 기본 상태 관리 설정
+- [ ] Week 3: 코드 생성 및 코드 뷰어
+  - [ ] 코드 생성 엔진 구현
+  - [ ] 코드 뷰어 패널 구현
+  - [ ] 구문 강조 적용
+  - [ ] 실시간 코드 업데이트
+- [ ] Week 4: 블록 편집 및 저장
+  - [ ] 블록 편집 모달 구현
+  - [ ] 매개변수 입력 및 유효성 검증
+  - [ ] 로컬 스토리지 저장/불러오기
+  - [ ] 기본 테스트 및 버그 수정
 
 ### Phase 2: 고급 기능 (3주)
 - 블록 검색 및 필터링
@@ -212,8 +233,9 @@ Excel VBA 매크로를 시각적인 블록으로 조립하는 웹 기반 코딩 
 
 - ✅ 블록 정의 완료 (100개)
 - ✅ 웹앱 스펙 완료
-- 🔄 UI/UX 디자인 진행 예정
-- 📅 개발 시작 예정
+- ✅ Phase 1 MVP 상세 체크리스트 완료
+- 🔄 Phase 1 MVP 개발 진행 중 (Week 1-4)
+- 📅 Phase 2 고급 기능 개발 예정
 
 ---
 
