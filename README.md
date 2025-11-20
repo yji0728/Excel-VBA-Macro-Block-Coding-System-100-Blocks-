@@ -68,37 +68,40 @@ Excel VBA 매크로를 시각적인 블록으로 조립하는 웹 기반 코딩 
 
 ## 🚀 시작하기
 
-### 개발자용
+### Phase 1 MVP 개발을 시작하려면
 
-1. **스펙 문서 확인**
-   ```bash
-   # 웹앱 스펙 문서 읽기
-   cat webapp_specification.md
-   ```
+📖 **[GETTING_STARTED.md](./GETTING_STARTED.md)** - 개발 시작 가이드 (필독!)
 
-2. **블록 정의 참조**
-   ```bash
-   # 100개 블록 정의 확인
-   cat "excel _vba_code_100.md"
-   ```
+1. **프로젝트 이해하기**
+   - [README.md](./README.md) - 프로젝트 개요
+   - [webapp_specification.md](./webapp_specification.md) - 웹앱 전체 스펙
+   - [excel _vba_code_100.md](./excel%20_vba_code_100.md) - 100개 블록 정의
 
-3. **개발 환경 설정** (예시 - React)
-   ```bash
-   # 프로젝트 생성
-   npx create-react-app vba-block-coding --template typescript
-   cd vba-block-coding
-   
-   # 필수 라이브러리 설치
-   npm install @mui/material @emotion/react @emotion/styled
-   npm install react-beautiful-dnd
-   npm install @monaco-editor/react
-   npm install @reduxjs/toolkit react-redux
-   ```
+2. **개발 환경 설정**
+   - [DEVELOPMENT_SETUP.md](./DEVELOPMENT_SETUP.md) - 상세 설정 가이드
 
-4. **개발 시작**
-   - `webapp_specification.md`의 Phase 1 (Week 1)부터 시작
-   - 3개 패널 레이아웃 구현
-   - 블록 정의 데이터 구조 생성
+3. **개발 시작**
+   - [PHASE1_MVP_CHECKLIST.md](./PHASE1_MVP_CHECKLIST.md) - 4주 체크리스트
+   - Week 1부터 순서대로 진행
+
+### 빠른 시작 (Quick Start)
+```bash
+# 1. 프로젝트 생성
+npx create-react-app vba-block-coding --template typescript
+cd vba-block-coding
+
+# 2. 필수 라이브러리 설치
+npm install @mui/material @emotion/react @emotion/styled
+npm install react-beautiful-dnd @types/react-beautiful-dnd
+npm install @monaco-editor/react
+npm install @reduxjs/toolkit react-redux
+npm install uuid @types/uuid
+
+# 3. 개발 서버 실행
+npm start
+```
+
+자세한 내용은 **[DEVELOPMENT_SETUP.md](./DEVELOPMENT_SETUP.md)** 참조
 
 ### 기획자/디자이너용
 
